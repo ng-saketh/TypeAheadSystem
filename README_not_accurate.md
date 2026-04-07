@@ -2,7 +2,7 @@
 
 ## Overview
 
-A production-ready TypeAhead search system built with **Java 11+** and **Spring Boot 3.1.5** using a **Trie data structure** for efficient prefix-based searching.
+A production-ready TypeAhead search system built  using a **Trie data structure** for efficient prefix-based searching.
 
 **Key Technologies**:
 - Spring Boot 3.1.5
@@ -171,27 +171,6 @@ public class TypeAheadService {
 
 ---
 
-## Sample Data
-
-30 pre-loaded phrases across 10 categories:
-
-| Category | Phrases | Count |
-|----------|---------|-------|
-| Python | python, python tutorial, python list, python dictionary, python tutorial, python dictionary | 6 |
-| Java | java, java spring boot, java collections | 3 |
-| JavaScript | javascript, javascript async, javascript array methods | 3 |
-| TypeScript | typescript, typescript interfaces | 2 |
-| Database | database, database design, database optimization | 3 |
-| AWS | aws, aws lambda, aws s3 | 3 |
-| Cloud/Docker | cloud computing, cloud native, docker, docker containers | 3 |
-| Kubernetes | kubernetes | 1 |
-| ML/Data | machine learning, machine learning algorithms | 2 |
-| System Design | data science, data structures, algorithms, system design | 4 |
-
-All phrases initialized with **frequency = 1**.
-
----
-
 ## API Specifications
 
 ### 1. Ingest API
@@ -277,36 +256,11 @@ All phrases initialized with **frequency = 1**.
   "timestamp": 1712239200000
 }
 ```
-
----
-
-## Configuration
-
-File: `src/main/resources/application.properties`
-
-```properties
-# Server
-server.port=8080
-
-# Logging
-logging.level.root=INFO
-logging.level.com.typeahead=DEBUG
-
-# TypeAhead Configuration
-typeahead.trie.maxSuggestions=5
-typeahead.trie.rebuildIntervalMinutes=15
-```
-
 ---
 
 ## Scheduling
 
 ### Auto-Rebuild Schedule
-
-```
-@Scheduled(fixedRateString = "${typeahead.trie.rebuildIntervalMinutes:15}", 
-           timeUnit = java.util.concurrent.TimeUnit.MINUTES)
-```
 
 **How it works**:
 1. Runs every 15 minutes automatically
@@ -323,121 +277,11 @@ typeahead.trie.rebuildIntervalMinutes=15
 
 ---
 
-## Performance Characteristics
-
-### Time Complexity
-
-| Operation | Complexity | Details |
-|-----------|-----------|---------|
-| Insert | O(m) | m = phrase length |
-| Search | O(m + k) | m = prefix length, k ≤ 5 |
-| Rebuild | O(n*m) | n = phrases, m = avg phrase length |
-| Ingest | O(m) | Insert into repo + Trie |
-
-### Space Complexity
-
-| Component | Complexity | Details |
-|-----------|-----------|---------|
-| Trie | O(n*m) | n = phrases, m = avg phrase length |
-| Repository | O(n) | n = total phrases |
-| Top-K at node | O(k) | k = 5 (constant) |
-
-### Benchmarks (Estimated)
-
-- **Search latency**: < 5ms for most queries
-- **Ingest latency**: < 1ms per phrase
-- **Rebuild time**: ~100-200ms for 1000 phrases
-- **Memory**: ~2-3MB for 1000 phrases
-
----
-
 ## Thread Safety
 
 - `ConcurrentHashMap` for repository - thread-safe
 - Trie operations - synchronized externally if needed
 - REST endpoints - handled by Spring
-
----
-
-## Testing
-
-File: `src/test/java/com/typeahead/TrieTest.java`
-
-**Test Cases** (10+):
-1. Insert and search basic functionality
-2. Empty prefix handling
-3. Non-existent prefix handling
-4. Trie rebuild with new data
-5. Case sensitivity handling
-6. Frequency tracking and sorting
-7. Top-K result limiting
-8. Get all phrases functionality
-9. Clear operation
-10. TrieNode top searches functionality
-
-**Run tests**:
-```bash
-mvn test
-```
-
----
-
-## Future Enhancements
-
-### Phase 1 - Database Integration
-- [ ] MySQL implementation
-- [ ] MongoDB implementation
-- [ ] Data persistence
-
-### Phase 2 - Performance
-- [ ] Redis caching layer
-- [ ] Distributed Trie
-- [ ] Horizontal scaling
-
-### Phase 3 - Features
-- [ ] Analytics & metrics
-- [ ] Geolocation-based searches
-- [ ] User-specific suggestions
-- [ ] Batch ingestion API
-
-### Phase 4 - DevOps
-- [ ] Docker containerization
-- [ ] Kubernetes deployment
-- [ ] CI/CD pipeline
-- [ ] Monitoring & logging
-
----
-
-## Switching to Database
-
-The system is designed for easy database migration using the **Repository Pattern**:
-
-1. Create new repository implementation (e.g., `MySQLSearchDataRepository`)
-2. Implement `SearchDataRepository` interface
-3. Service layer requires **zero changes**
-4. Spring auto-injects correct implementation
-
-See `DATABASE_INTEGRATION_GUIDE.md` for detailed steps.
-
----
-
-## File Descriptions
-
-| File | Purpose | Lines |
-|------|---------|-------|
-| pom.xml | Maven configuration & dependencies | 80 |
-| TypeAheadApplication.java | Spring Boot entry point | 12 |
-| TypeAheadController.java | REST endpoints (4 APIs) | 120 |
-| TypeAheadService.java | Business logic & scheduling | 100 |
-| Trie.java | Trie data structure | 110 |
-| SearchData.java | Entity model | 15 |
-| TrieNode.java | Trie node structure | 30 |
-| SearchDataRepository.java | Data access interface | 20 |
-| InMemorySearchDataRepository.java | Concurrent HashMap implementation | 60 |
-| TrieTest.java | Unit tests | 120 |
-| application.properties | Configuration | 8 |
-
-**Total**: ~700 lines of production code
 
 ---
 
@@ -449,64 +293,6 @@ See `DATABASE_INTEGRATION_GUIDE.md` for detailed steps.
 4. **Scheduled Tasks** - Auto-rebuild mechanism
 5. **DTO Pattern** - Request/Response objects
 6. **Singleton Pattern** - Service & Controller beans
-
----
-
-## Development Quick Commands
-
-```bash
-# Build
-mvn clean install
-
-# Run
-mvn spring-boot:run
-
-# Test
-mvn test
-
-# Package
-mvn package
-
-# Run JAR
-java -jar target/typeahead-system-1.0.0.jar
-```
-
----
-
-## Deployment
-
-### Local Deployment
-```bash
-mvn spring-boot:run
-```
-
-### Production JAR
-```bash
-mvn clean package
-java -jar target/typeahead-system-1.0.0.jar --server.port=8080
-```
-
-### Docker (Future)
-```bash
-docker build -t typeahead-system .
-docker run -p 8080:8080 typeahead-system
-```
-
----
-
-## Support & Documentation
-
-- `README.md` - Complete system documentation
-- `QUICK_START.md` - Quick start guide
-- `API_EXAMPLES.md` - Detailed API examples
-- `DATABASE_INTEGRATION_GUIDE.md` - Database migration guide
-- Inline code comments for implementation details
-
----
-
-## License
-
-Open source - Feel free to use and modify for your needs.
 
 ---
 
