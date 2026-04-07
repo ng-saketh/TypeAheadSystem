@@ -1,0 +1,119 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+pom.xml.bak
+pom.xml.asc
+.flattened-pom.xml
+
+# IDE - IntelliJ
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# IDE - VS Code
+.vscode/
+*.code-workspace
+
+# IDE - Eclipse
+.classpath
+.project
+.c9/
+*.launch
+.settings/
+
+# IDE - Sublime
+*.sublime-project
+*.sublime-workspace
+
+# Build
+*.class
+*.jar
+*.war
+*.rar
+
+# MacOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+.~*
+
+# Temporary files
+*.tmp
+*.log
+*.swp
+*~
+
+# Spring Boot
+application.properties.local
+application-local.properties
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Node (if frontend is included)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Test coverage
+jacoco.exec
+coverage/
+
+# Build output
+bin/
+dist/
+build/
+
+# Package
+*.zip
+*.tar.gz
+*.rar
+
+# OS
+.DS_Store
+**/Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage
+.coverage
+htmlcov/
+
+# Database dumps
+*.dump
+*.sql
+
+# Keep build directories but ignore contents
+!**/target/.gitkeep
